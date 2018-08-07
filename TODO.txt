@@ -1,0 +1,129 @@
+teraz:
+tryb zaznaczania wielu plików - podwójny toolbar
+
+połączenie i komunikacja
+logowanie
+TODO tryb aktywny
+TODO tryb pasywny
+TODO transfer ASCII
+TODO transfer binarny
+TODO listowanie katalogu
+TODO otwieranie katalogu
+TODO wysyłanie
+TODO pobieranie
+TODO tworzenie katalogu
+TODO tworzenie pliku
+TODO dopisywanie do pliku
+TODO usuwanie
+TODO kopiowanie
+TODO przenoszenie
+TODO zmiana nazwy
+TODO lista transferów
+TODO wskaźnik postępu
+
+#########################################################################
+
+kolejność:
+1. logowanie
+2. wybór transferu
+3. wybór trybu
+...
+4. zakończenie
+
+---------------------------------------------------------
+
+logowanie:
+C:USER user
+S:OK
+C:PASS pass (pass zakodowane w Base64)
+S:OK
+
+transfer:
+C:TRANSFER (BINARY|ASCII)
+S:OK
+
+tryb aktywny:
+C:ACTIVE port
+- drugie połączenie od serwera
+S:OK
+
+tryb pasywny:
+C:PASSIVE
+S:PORT port
+- drugie połączenie od klienta
+
+zakończenie:
+C:EXIT
+
+listowanie katalogu:
+C:LIST (TRUE|FALSE|{})
+{
+S:(DIR/FILE)  //folder czy plik
+S:nazwa_pliku
+S:(TRUE/FALSE) //czy ukryty
+S:rozmiar
+}
+
+wejście do podkatalogu:
+C:CD
+C:podkatalog
+S:OK
+
+zmiana pełnej ścieżki:
+C:DIR
+C:ścieżka
+S:OK
+
+tworzenie katalogu:
+C:MKDIR
+C:katalog
+S:OK
+
+kopiowanie:
+C:CP
+C:stara_ścieżka
+C:nowa_ścieżka
+S:OK
+
+usuwanie:
+C:RM
+C:ścieżka
+S:OK
+
+pobieranie:
+C:GET
+C:ścieżka
+S:OK
+S2:rozmiar
+S2:zawartość
+
+wysyłanie:
+C:PUT
+C:ścieżka
+S:OK
+C2:rozmiar
+C2:zawartość
+
+zmiana nazwy:
+C:MV
+C:stara_ścieżka
+C:nowa_ścieżka
+S:OK
+
+tworzenie pliku:
+C:TOUCH
+C:plik
+S:OK
+
+sprawdzenie katalogu roboczego:
+C:PWD
+S:ścieżka
+
+dopisywanie linii do pliku:
+C:APPEND
+C:ścieżka
+C:linia
+S:OK
+
+zamknięcie połączenia:
+C:EXIT

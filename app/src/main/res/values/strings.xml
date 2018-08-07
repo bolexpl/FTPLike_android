@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">FTPL Client</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_host">Host</string>
+    <string name="prompt_port">Port</string>
+    <string name="prompt_login">Login</string>
+    <string name="prompt_password">Hasło</string>
+    <string name="prompt_transfer">Rodzaj transferu:</string>
+    <string name="prompt_mode">Tryb:</string>
+
+    <string name="transfer_ascii">ASCII</string>
+    <string name="transfer_binary">Binarny</string>
+    <string name="mode_active">Aktywny</string>
+    <string name="mode_passive">Pasywny</string>
+
+    <string name="action_sign_in">Połącz</string>
+    <string name="error_field_required">To pole jest wymagane</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="action_show_hidden">Pokaż/Ukryj ukryte</string>
+    <string name="action_disconnect">Odłącz</string>
+    <string name="title_activity_explorer">Explorer</string>
+    <string name="tab_text_1">Lokalne</string>
+    <string name="tab_text_2">Zdalne</string>
+    <string name="edit_path">Ścieżka</string>
+    <string name="popupmenu">PopUpMenu</string>
+
+     <string name="size_b">%d B</string>
+    <string name="size_kb">%.2f KB</string>
+    <string name="size_mb">%.2f MB</string>
+    <string name="size_gb">%.2f GB</string>
+    <string name="menu_multi_del">usuń</string>
+</resources>
