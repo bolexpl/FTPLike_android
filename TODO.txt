@@ -1,5 +1,5 @@
 teraz:
-tryb zaznaczania wielu plików - podwójny toolbar
+multi select
 
 połączenie i komunikacja
 logowanie
@@ -25,8 +25,8 @@ TODO wskaźnik postępu
 
 kolejność:
 1. logowanie
-2. wybór transferu
-3. wybór trybu
+2. wybór typu transferu
+3. wybór trybu połączenia
 ...
 4. zakończenie
 

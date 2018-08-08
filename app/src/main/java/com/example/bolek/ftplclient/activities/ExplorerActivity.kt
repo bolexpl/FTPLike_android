@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.example.bolek.ftplclient.*
@@ -124,7 +125,7 @@ class ExplorerActivity : AppCompatActivity() {
         lateinit var adapter: ExplorerAdapter
         var isMultiSelect = false
         var mActionMode: ActionMode? = null
-        var multiselect_list: ArrayList<FileInfo> = ArrayList()
+        var selected: ArrayList<FileInfo> = ArrayList()
         var contextMenu: Menu? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -132,7 +133,7 @@ class ExplorerActivity : AppCompatActivity() {
             val rootView = inflater.inflate(R.layout.fragment_explorer, container, false)
             val r = rootView.recycler
             activity.localAdapter = ExplorerAdapter(context!!, true,
-                    LocalExplorer.listFiles(), multiselect_list)
+                    LocalExplorer.listFiles(), selected)
             adapter = activity.localAdapter
             r.setHasFixedSize(true)
             r.layoutManager = LinearLayoutManager(context)
@@ -142,45 +143,52 @@ class ExplorerActivity : AppCompatActivity() {
 
             r.addOnItemTouchListener(RecyclerItemClickListener(context!!, r,
                     object : RecyclerItemClickListener.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    if (isMultiSelect)
-                        multiSelect(position)
-                    else
-                        Toast.makeText(context!!, "Details Page", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onItemLongClick(view: View, position: Int) {
-                    if (!isMultiSelect) {
-                        multiselect_list = ArrayList()
-                        isMultiSelect = true
-
-                        if (mActionMode == null) {
-                            mActionMode = (context as ExplorerActivity).startActionMode(mActionModeCallback)
+                        override fun onItemClick(view: View, position: Int) {
+                            if (isMultiSelect) {
+                                if (adapter.list[position].fileName != "..")
+                                    multiSelect(position)
+                            } else
+                                Toast.makeText(context!!, adapter.list[position].fileName, Toast.LENGTH_SHORT).show()
                         }
-                    }
 
-                    multiSelect(position)
+                        override fun onItemLongClick(view: View, position: Int) {
+                            if (!isMultiSelect) {
+                                selected = ArrayList()
+                                isMultiSelect = true
 
-                }
-            }))
+                                if (mActionMode == null) {
+                                    mActionMode =
+                                            (context as ExplorerActivity)
+                                                    .startActionMode(mActionModeCallback)
+                                }
+                            }
+
+                            multiSelect(position)
+                        }
+                    }))
 
             return rootView
         }
 
-        fun multiSelect(position: Int){
+        fun multiSelect(position: Int) {
             if (mActionMode != null) {
-                if (multiselect_list.contains(adapter.list[position]))
-                    multiselect_list.remove(adapter.list[position])
+                if (selected.contains(adapter.list[position]))
+                    selected.remove(adapter.list[position])
                 else
-                    multiselect_list.add(adapter.list[position])
+                    selected.add(adapter.list[position])
 
-                if (multiselect_list.size > 0)
-                    mActionMode!!.title = "" + multiselect_list.size
+                if (selected.size > 0)
+                    mActionMode!!.title = selected.size.toString()
                 else {
-                    mActionMode!!.title = ""
+                    mActionMode!!.finish()
                 }
                 refreshAdapter()
             }
+            Log.d("SELECT", "pliki--------------------------------->")
+            for (f in selected) {
+                Log.d("SELECT", f.fileName)
+            }
+            Log.d("SELECT", "--------------------------------------<")
         }
 
         private val mActionModeCallback = object : ActionMode.Callback {
@@ -210,14 +218,14 @@ class ExplorerActivity : AppCompatActivity() {
             override fun onDestroyActionMode(mode: ActionMode) {
                 mActionMode = null
                 isMultiSelect = false
-                multiselect_list = ArrayList()
+                selected = ArrayList()
                 refreshAdapter()
             }
         }
 
         fun refreshAdapter() {
 //            adapter.list = files_list
-            adapter.selected = multiselect_list
+            adapter.selected = selected
             adapter.notifyDataSetChanged()
         }
 
