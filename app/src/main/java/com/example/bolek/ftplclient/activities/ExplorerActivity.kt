@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -149,6 +150,7 @@ class ExplorerActivity : AppCompatActivity() {
                                     multiSelect(position)
                             } else
                                 Toast.makeText(context!!, adapter.list[position].fileName, Toast.LENGTH_SHORT).show()
+//                            Log.d("DEBUG","click")
                         }
 
                         override fun onItemLongClick(view: View, position: Int) {
@@ -164,8 +166,42 @@ class ExplorerActivity : AppCompatActivity() {
                             }
 
                             multiSelect(position)
+
+//                            Log.d("DEBUG", "long click")
                         }
                     }))
+
+
+//            r.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+//
+//                val mGestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+//                    override fun onSingleTapUp(e: MotionEvent): Boolean {
+//                        return true
+//                    }
+//
+//                    override fun onLongPress(e: MotionEvent) {
+//                        Log.d("DEBUG", "long")
+//                    }
+//                })
+//
+//                override fun onTouchEvent(p0: RecyclerView, e: MotionEvent) {
+//                }
+//
+//                override fun onInterceptTouchEvent(p0: RecyclerView, e: MotionEvent): Boolean {
+//
+//                    mGestureDetector.onTouchEvent(e)
+//                    onClick()
+//
+//                    return false
+//                }
+//
+//                fun onClick() {
+//                    Log.d("DEBUG", "click")
+//                }
+//
+//                override fun onRequestDisallowInterceptTouchEvent(p0: Boolean) {
+//                }
+//            })
 
             return rootView
         }

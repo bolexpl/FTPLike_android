@@ -1,8 +1,7 @@
 teraz:
-multi select
 
-połączenie i komunikacja
-logowanie
+TODO połączenie i komunikacja
+TODO logowanie
 TODO tryb aktywny
 TODO tryb pasywny
 TODO transfer ASCII
