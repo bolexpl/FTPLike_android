@@ -1,5 +1,6 @@
-package com.example.bolek.ftplclient
+package com.example.bolek.ftplclient.model
 
+import io.reactivex.Single
 import java.io.IOException
 
 interface IExplorer {
@@ -9,7 +10,7 @@ interface IExplorer {
      *
      * @return ścieżka
      */
-    fun getDir(): String
+    fun getDir(): Single<String>
 
     /**
      * Metoda zmieniająca aktualną ścieżkę w obiekcie explorera
@@ -19,7 +20,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun setDir(dir: String): Boolean
+    fun setDir(dir: String): Single<Boolean>
 
     /**
      * Metoda służąca do kopiowania plików między katalogami.
@@ -48,7 +49,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun touch(name: String): Boolean
+    fun touch(name: String): Single<Boolean>
 
     /**
      * Metoda dopisująca ciąg znaków do pliku
@@ -59,7 +60,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun append(fileName: String, data: String): Boolean
+    fun append(fileName: String, data: String): Single<Boolean>
 
     /**
      * Metoda negująca wartość atrybutu hidden
@@ -87,7 +88,14 @@ interface IExplorer {
      *
      * @param directory Nazwa katalogu
      */
-    fun cd(directory: String)
+    fun cd(directory: String) : Single<Boolean>
+
+    /**
+     * Metoda służąca do przechodzenia do katalogu nadrzędnego
+     *
+     * @return sukces
+     */
+    fun cdParent(): Single<Boolean>
 
     /**
      * Metoda do usuwania pliku
@@ -97,14 +105,14 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun rm(name: String): Boolean
+    fun rm(name: String): Single<Boolean>
 
     /**
      * Metoda listująca katalog roboczy
      *
      * @return Lista elementów w katalogu
      */
-    fun listFiles(): List<FileInfo>
+    fun listFiles(): Single<List<FileInfo>>
 
     /**
      * Metoda służąca do logowania na serwerze
@@ -115,7 +123,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun login(login: String, pass: String): Boolean
+    fun login(login: String, pass: String): Single<Boolean>
 
     /**
      * Metoda do połączenia w trybie pasywnym
@@ -124,7 +132,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun connectPassive(): Boolean
+    fun connectPassive(): Single<Boolean>
 
     /**
      * Metoda do połączenia w trybie aktywnym
@@ -133,7 +141,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun connectActive(): Boolean
+    fun connectActive(): Single<Boolean>
 
     /**
      * Metoda do tworzenia katalogu
@@ -143,7 +151,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun mkdir(dir: String): Boolean
+    fun mkdir(dir: String): Single<Boolean>
 
     /**
      * Metoda do przenoszenia i zmiany nazwy plików i katalogów
@@ -154,7 +162,7 @@ interface IExplorer {
      * @throws IOException wyjątek
      */
     @Throws(IOException::class)
-    fun mv(oldFile: String, newFile: String): Boolean
+    fun mv(oldFile: String, newFile: String): Single<Boolean>
 
     /**
      * Metoda kończąca połączenie

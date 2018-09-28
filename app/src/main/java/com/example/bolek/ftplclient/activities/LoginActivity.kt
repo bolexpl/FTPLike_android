@@ -16,7 +16,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.bolek.ftplclient.R
-import com.example.bolek.ftplclient.RemoteExplorer
+import com.example.bolek.ftplclient.model.RemoteExplorer
 import java.io.IOException
 import java.lang.ref.WeakReference
 

@@ -1,5 +1,6 @@
-package com.example.bolek.ftplclient
+package com.example.bolek.ftplclient.model
 
+import com.example.bolek.ftplclient.Protocol
 import com.example.bolek.ftplclient.lib.Base64Coder
 import java.io.*
 import java.net.Socket
@@ -73,7 +74,7 @@ object RemoteExplorer : AutoCloseable{
     }
 
     fun transfer(binary: Boolean): Boolean {
-        this.binary = binary
+        RemoteExplorer.binary = binary
         if (binary)
             write("${Protocol.TRANSFER} ${Protocol.BINARY}")
         else

@@ -1,11 +1,12 @@
 package com.example.bolek.ftplclient.lib
 
+import java.io.File
 import java.nio.ByteBuffer
 
 /**
  * Klasa konwersji między typem long i talbicą bajtów
  */
-object ByteUtils {
+object Utils {
 
     private val buffer = ByteBuffer.allocate(java.lang.Long.SIZE / 8)
 
@@ -32,5 +33,16 @@ object ByteUtils {
         buffer.put(bytes, 0, bytes.size)
         buffer.flip()
         return buffer.long
+    }
+
+    /**
+     * Metoda sprawdzająca czy jest dostęp do katalogu.
+     *
+     * @param dir Ścieżka do katalogu
+     * @return Czy dostępny katalog
+     */
+    fun isAccess(dir: String): Boolean {
+        val f = File(dir)
+        return f.exists() && f.isDirectory && f.canRead() && f.canExecute()
     }
 }

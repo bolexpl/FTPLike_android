@@ -1,4 +1,5 @@
 teraz:
+struktura reaktywna
 
 TODO połączenie i komunikacja
 TODO logowanie

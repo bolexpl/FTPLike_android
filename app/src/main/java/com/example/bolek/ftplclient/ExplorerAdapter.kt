@@ -6,15 +6,14 @@ import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import com.example.bolek.ftplclient.model.FileInfo
 import kotlinx.android.synthetic.main.file_item.view.*
 
-class ExplorerAdapter(private val context: Context, private val local: Boolean,
-                      var list: List<FileInfo>, var selected : ArrayList<FileInfo>) :
+class ExplorerAdapter(private val context: Context,
+                      var selected : ArrayList<FileInfo>) :
         RecyclerView.Adapter<ExplorerAdapter.ViewHolder>() {
 
-    init {
-        updateAll()
-    }
+    var list: List<FileInfo> = emptyList()
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
@@ -25,14 +24,14 @@ class ExplorerAdapter(private val context: Context, private val local: Boolean,
         val popupButton = v.popupButton!!
     }
 
-    fun updateAll() {
-        if (local) {
-            list = LocalExplorer.listFiles()
-        } else {
-            //TODO
-        }
-        notifyDataSetChanged()
-    }
+//    fun updateAll() {
+//        if (local) {
+//            list = LocalExplorer.listFiles()
+//        } else {
+//            //TODO
+//        }
+//        notifyDataSetChanged()
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.file_item, parent, false))

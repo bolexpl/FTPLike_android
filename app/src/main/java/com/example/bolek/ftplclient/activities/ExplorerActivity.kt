@@ -10,19 +10,22 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.example.bolek.ftplclient.*
 import com.example.bolek.ftplclient.lib.RecyclerItemClickListener
+import com.example.bolek.ftplclient.model.FileInfo
+import com.example.bolek.ftplclient.model.LocalExplorer
+import com.example.bolek.ftplclient.model.RemoteExplorer
+import com.example.bolek.ftplclient.model.ExplorerUpdater
 
 import kotlinx.android.synthetic.main.activity_explorer.*
 import kotlinx.android.synthetic.main.fragment_explorer.view.*
 
 class ExplorerActivity : AppCompatActivity() {
 
-    lateinit var localAdapter: ExplorerAdapter
+    lateinit var localUpdater: ExplorerUpdater
     lateinit var remoteAdapter: ExplorerAdapter
 
 
@@ -57,7 +60,6 @@ class ExplorerActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_explorer, menu)
@@ -81,16 +83,18 @@ class ExplorerActivity : AppCompatActivity() {
             }
             R.id.action_show_hidden -> {
                 LocalExplorer.showHidden = !LocalExplorer.showHidden
-                RemoteExplorer.showHidden = !RemoteExplorer.showHidden
-                localAdapter.updateAll()
-                remoteAdapter.updateAll()
+//                RemoteExplorer.showHidden = !RemoteExplorer.showHidden
+                localUpdater.refresh()
+//                remoteAdapter.updateAll()
                 return true
+            }
+            R.id.action_debug -> {
+                //debug
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
-
 
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -123,6 +127,7 @@ class ExplorerActivity : AppCompatActivity() {
     class LocalFragment : Fragment() {
 
         lateinit var activity: ExplorerActivity
+        lateinit var updater: ExplorerUpdater
         lateinit var adapter: ExplorerAdapter
         var isMultiSelect = false
         var mActionMode: ActionMode? = null
@@ -133,14 +138,16 @@ class ExplorerActivity : AppCompatActivity() {
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_explorer, container, false)
             val r = rootView.recycler
-            activity.localAdapter = ExplorerAdapter(context!!, true,
-                    LocalExplorer.listFiles(), selected)
-            adapter = activity.localAdapter
+
+            adapter = ExplorerAdapter(context!!, selected)
+            updater = ExplorerUpdater(context!!, LocalExplorer, adapter)
+            updater.refresh()
+
+            activity.localUpdater = updater
             r.setHasFixedSize(true)
             r.layoutManager = LinearLayoutManager(context)
             r.itemAnimator = DefaultItemAnimator()
             r.adapter = adapter
-
 
             r.addOnItemTouchListener(RecyclerItemClickListener(context!!, r,
                     object : RecyclerItemClickListener.OnItemClickListener {
@@ -148,9 +155,10 @@ class ExplorerActivity : AppCompatActivity() {
                             if (isMultiSelect) {
                                 if (adapter.list[position].fileName != "..")
                                     multiSelect(position)
-                            } else
-                                Toast.makeText(context!!, adapter.list[position].fileName, Toast.LENGTH_SHORT).show()
-//                            Log.d("DEBUG","click")
+                            } else {
+                                updater.cd(adapter.list[position].fileName)
+//                                Toast.makeText(context!!, adapter.list[position].fileName, Toast.LENGTH_SHORT).show()
+                            }
                         }
 
                         override fun onItemLongClick(view: View, position: Int) {
@@ -166,42 +174,8 @@ class ExplorerActivity : AppCompatActivity() {
                             }
 
                             multiSelect(position)
-
-//                            Log.d("DEBUG", "long click")
                         }
                     }))
-
-
-//            r.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-//
-//                val mGestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-//                    override fun onSingleTapUp(e: MotionEvent): Boolean {
-//                        return true
-//                    }
-//
-//                    override fun onLongPress(e: MotionEvent) {
-//                        Log.d("DEBUG", "long")
-//                    }
-//                })
-//
-//                override fun onTouchEvent(p0: RecyclerView, e: MotionEvent) {
-//                }
-//
-//                override fun onInterceptTouchEvent(p0: RecyclerView, e: MotionEvent): Boolean {
-//
-//                    mGestureDetector.onTouchEvent(e)
-//                    onClick()
-//
-//                    return false
-//                }
-//
-//                fun onClick() {
-//                    Log.d("DEBUG", "click")
-//                }
-//
-//                override fun onRequestDisallowInterceptTouchEvent(p0: Boolean) {
-//                }
-//            })
 
             return rootView
         }
@@ -260,7 +234,6 @@ class ExplorerActivity : AppCompatActivity() {
         }
 
         fun refreshAdapter() {
-//            adapter.list = files_list
             adapter.selected = selected
             adapter.notifyDataSetChanged()
         }
