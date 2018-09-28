@@ -10,7 +10,7 @@ interface IExplorer {
      *
      * @return ścieżka
      */
-    fun getDir(): Single<String>
+    fun getDir(): String
 
     /**
      * Metoda zmieniająca aktualną ścieżkę w obiekcie explorera

@@ -25,9 +25,15 @@
     <string name="edit_path">Ścieżka</string>
     <string name="popupmenu">PopUpMenu</string>
 
-     <string name="size_b">%d B</string>
+    <string name="size_b">%d B</string>
     <string name="size_kb">%.2f KB</string>
     <string name="size_mb">%.2f MB</string>
     <string name="size_gb">%.2f GB</string>
     <string name="menu_multi_del">usuń</string>
+
+    <string name="menu_popup_open">Otwórz</string>
+    <string name="menu_popup_rename">Zmień nazwę</string>
+    <string name="menu_popup_attach">Dopisz</string>
+    <string name="menu_popup_delete">Usuń</string>
+
 </resources>

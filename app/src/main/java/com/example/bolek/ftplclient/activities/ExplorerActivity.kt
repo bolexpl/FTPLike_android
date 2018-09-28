@@ -10,8 +10,10 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
 import android.util.Log
 import android.view.*
+import android.widget.EditText
 import android.widget.Toast
 import com.example.bolek.ftplclient.*
 import com.example.bolek.ftplclient.lib.RecyclerItemClickListener
@@ -129,6 +131,7 @@ class ExplorerActivity : AppCompatActivity() {
         lateinit var activity: ExplorerActivity
         lateinit var updater: ExplorerUpdater
         lateinit var adapter: ExplorerAdapter
+        lateinit var path: EditText
         var isMultiSelect = false
         var mActionMode: ActionMode? = null
         var selected: ArrayList<FileInfo> = ArrayList()
@@ -139,8 +142,10 @@ class ExplorerActivity : AppCompatActivity() {
             val rootView = inflater.inflate(R.layout.fragment_explorer, container, false)
             val r = rootView.recycler
 
+            path = rootView.findViewById(R.id.path)
+
             adapter = ExplorerAdapter(context!!, selected)
-            updater = ExplorerUpdater(context!!, LocalExplorer, adapter)
+            updater = ExplorerUpdater(context!!, LocalExplorer, adapter, path)
             updater.refresh()
 
             activity.localUpdater = updater
@@ -155,10 +160,8 @@ class ExplorerActivity : AppCompatActivity() {
                             if (isMultiSelect) {
                                 if (adapter.list[position].fileName != "..")
                                     multiSelect(position)
-                            } else {
+                            } else
                                 updater.cd(adapter.list[position].fileName)
-//                                Toast.makeText(context!!, adapter.list[position].fileName, Toast.LENGTH_SHORT).show()
-                            }
                         }
 
                         override fun onItemLongClick(view: View, position: Int) {
@@ -237,16 +240,19 @@ class ExplorerActivity : AppCompatActivity() {
             adapter.selected = selected
             adapter.notifyDataSetChanged()
         }
-
     }
 
     class RemoteFragment : Fragment() {
 
         lateinit var activity: ExplorerActivity
+        lateinit var path: EditText
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_explorer, container, false)
+
+            path = rootView.findViewById(R.id.path)
+
 //            val r = rootView.recycler
 //            r.setHasFixedSize(true)
 //            r.layoutManager = LinearLayoutManager(context)

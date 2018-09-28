@@ -1,5 +1,5 @@
 teraz:
-struktura reaktywna
+popup menu
 
 TODO połączenie i komunikacja
 TODO logowanie

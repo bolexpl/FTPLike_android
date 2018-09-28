@@ -45,6 +45,23 @@ class ExplorerAdapter(private val context: Context,
 
         holder.fileName.text = list[i].fileName
 
+        //TODO
+//        val bt = holder.popupButton
+//        bt.setOnClickListener{
+//            val popup = PopupMenu(context, bt)
+//            popup.inflate(R.menu.menu_popup)
+//
+//            popup.setOnMenuItemClickListener {
+//                when(it.itemId){
+//                    R.id.action_open ->{
+//
+//                    }
+//                    else -> false
+//
+//                }
+//            }
+//        }
+
         if(selected.contains(list[i])){
             holder.checked.visibility = View.VISIBLE
         }else{

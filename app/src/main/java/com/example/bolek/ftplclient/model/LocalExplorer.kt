@@ -13,8 +13,8 @@ object LocalExplorer : IExplorer {
     var path: String = Environment.getExternalStorageDirectory().absolutePath
     var showHidden = true
 
-    override fun getDir(): Single<String> {
-        return Single.just(path)
+    override fun getDir(): String {
+        return path
     }
 
     override fun listFiles(): Single<List<FileInfo>> {
