@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.GestureDetector
+import android.widget.ImageButton
 
 class RecyclerItemClickListener(context: Context,
                                 recyclerView: RecyclerView,
@@ -19,13 +20,9 @@ class RecyclerItemClickListener(context: Context,
 
     private var mListener: OnItemClickListener = listener
     private var mGestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            return true
-        }
+        override fun onSingleTapUp(e: MotionEvent): Boolean = true
 
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
-            return true
-        }
+        override fun onDoubleTap(e: MotionEvent?): Boolean = true
 
         override fun onLongPress(e: MotionEvent) {
             val childView = recyclerView.findChildViewUnder(e.x, e.y)
@@ -36,9 +33,6 @@ class RecyclerItemClickListener(context: Context,
 
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
     }
-
-    var flag = false
-    var f2 = false
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
         val childView = rv.findChildViewUnder(e.x, e.y)

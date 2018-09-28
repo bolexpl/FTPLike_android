@@ -1,5 +1,6 @@
 package com.example.bolek.ftplclient.activities
 
+import android.content.Intent
 import android.support.design.widget.TabLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -10,10 +11,11 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Editable
+import android.support.v7.widget.PopupMenu
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import com.example.bolek.ftplclient.*
 import com.example.bolek.ftplclient.lib.RecyclerItemClickListener
@@ -29,6 +31,8 @@ class ExplorerActivity : AppCompatActivity() {
 
     lateinit var localUpdater: ExplorerUpdater
     lateinit var remoteAdapter: ExplorerAdapter
+    private var back = false
+    private var thread : Thread? = null
 
 
     /**
@@ -80,6 +84,8 @@ class ExplorerActivity : AppCompatActivity() {
             }
             R.id.action_disconnect -> {
                 RemoteExplorer.disconnect()
+                val i = Intent(this, LoginActivity::class.java)
+                startActivity(i)
                 finish()
                 return true
             }
@@ -105,9 +111,11 @@ class ExplorerActivity : AppCompatActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager, private val activity: ExplorerActivity) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
+
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
                 val l = LocalFragment()
+
                 l.activity = activity
                 return l
             }
@@ -123,6 +131,30 @@ class ExplorerActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (back) {
+            thread?.interrupt()
+//            val intent = Intent(Intent.ACTION_MAIN)
+//            intent.addCategory(Intent.CATEGORY_HOME)
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            startActivity(intent)
+            finish()
+            System.exit(0)
+//            moveTaskToBack(true)
+        } else {
+            Toast.makeText(applicationContext, resources.getString(R.string.back_press), Toast.LENGTH_SHORT).show()
+            back = true
+            thread?.interrupt()
+            thread = Thread(Runnable {
+                try {
+                    Thread.sleep(3000)
+                    back = false
+                }catch (e : InterruptedException){ }
+            })
+            thread!!.start()
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -134,7 +166,7 @@ class ExplorerActivity : AppCompatActivity() {
         lateinit var path: EditText
         var isMultiSelect = false
         var mActionMode: ActionMode? = null
-        var selected: ArrayList<FileInfo> = ArrayList()
+        var selected: MutableList<FileInfo> = ArrayList()
         var contextMenu: Menu? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -146,6 +178,7 @@ class ExplorerActivity : AppCompatActivity() {
 
             adapter = ExplorerAdapter(context!!, selected)
             updater = ExplorerUpdater(context!!, LocalExplorer, adapter, path)
+            adapter.updater = updater
             updater.refresh()
 
             activity.localUpdater = updater
@@ -160,8 +193,9 @@ class ExplorerActivity : AppCompatActivity() {
                             if (isMultiSelect) {
                                 if (adapter.list[position].fileName != "..")
                                     multiSelect(position)
-                            } else
+                            } else {
                                 updater.cd(adapter.list[position].fileName)
+                            }
                         }
 
                         override fun onItemLongClick(view: View, position: Int) {

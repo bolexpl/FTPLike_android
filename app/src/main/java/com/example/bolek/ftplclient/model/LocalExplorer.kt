@@ -17,10 +17,10 @@ object LocalExplorer : IExplorer {
         return path
     }
 
-    override fun listFiles(): Single<List<FileInfo>> {
+    override fun listFiles(): Single<MutableList<FileInfo>> {
         return Single.create { emitter ->
-            val list = ArrayList<FileInfo>()
-            list.add(FileInfo("..", true, false, 0))
+            val list =
+                    mutableListOf(FileInfo("..", true, false, 0))
 
             val files: Array<File>
             val dirs: Array<File>
@@ -96,7 +96,7 @@ object LocalExplorer : IExplorer {
 
         while (true) {
             len = input.read(buf)
-            if(len <= 0) break
+            if (len <= 0) break
             output.write(buf, 0, len)
         }
 

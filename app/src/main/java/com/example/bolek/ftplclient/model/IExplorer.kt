@@ -112,7 +112,7 @@ interface IExplorer {
      *
      * @return Lista elementów w katalogu
      */
-    fun listFiles(): Single<List<FileInfo>>
+    fun listFiles(): Single<MutableList<FileInfo>>
 
     /**
      * Metoda służąca do logowania na serwerze

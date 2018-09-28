@@ -4,16 +4,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.PopupMenu
 import android.view.View
 import android.view.ViewGroup
+import com.example.bolek.ftplclient.model.ExplorerUpdater
 import com.example.bolek.ftplclient.model.FileInfo
 import kotlinx.android.synthetic.main.file_item.view.*
 
 class ExplorerAdapter(private val context: Context,
-                      var selected : ArrayList<FileInfo>) :
+                      var selected: MutableList<FileInfo>) :
         RecyclerView.Adapter<ExplorerAdapter.ViewHolder>() {
 
-    var list: List<FileInfo> = emptyList()
+    var list: MutableList<FileInfo> = mutableListOf()
+    lateinit var updater: ExplorerUpdater
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
@@ -45,26 +48,39 @@ class ExplorerAdapter(private val context: Context,
 
         holder.fileName.text = list[i].fileName
 
-        //TODO
-//        val bt = holder.popupButton
-//        bt.setOnClickListener{
-//            val popup = PopupMenu(context, bt)
-//            popup.inflate(R.menu.menu_popup)
-//
-//            popup.setOnMenuItemClickListener {
-//                when(it.itemId){
-//                    R.id.action_open ->{
-//
-//                    }
-//                    else -> false
-//
-//                }
-//            }
-//        }
+        val bt = holder.popupButton
+        bt.setOnClickListener { _ ->
+            val popup = PopupMenu(context, bt)
+            popup.inflate(R.menu.menu_popup)
 
-        if(selected.contains(list[i])){
+            popup.setOnMenuItemClickListener {
+                val item = list[holder.adapterPosition]
+                when (it.itemId) {
+                    R.id.action_open -> {
+                        updater.cd(item.fileName)
+                        true
+                    }
+                    R.id.action_rename -> {
+                        true
+                    }
+                    R.id.action_attach -> {
+                        true
+                    }
+                    R.id.action_delete -> {
+                        list.removeAt(holder.adapterPosition)
+                        notifyItemRemoved(holder.adapterPosition)
+                        true
+                    }
+                    else -> false
+
+                }
+            }
+            popup.show()
+        }
+
+        if (selected.contains(list[i])) {
             holder.checked.visibility = View.VISIBLE
-        }else{
+        } else {
             holder.checked.visibility = View.GONE
         }
 

@@ -36,4 +36,6 @@
     <string name="menu_popup_attach">Dopisz</string>
     <string name="menu_popup_delete">Usuń</string>
 
+    <string name="back_press">Wciśnij jeszcze raz, żeby wyjść.</string>
+
 </resources>

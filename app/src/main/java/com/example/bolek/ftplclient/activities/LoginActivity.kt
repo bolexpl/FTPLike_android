@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference
 
 class LoginActivity : AppCompatActivity() {
 
-    val REQUEST_CODE = 10
+    private val requestCode = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         val i = Intent(this, ExplorerActivity::class.java)
         startActivity(i)
+        finish()
     }
 
     private fun setupPermissions() {
@@ -46,14 +47,14 @@ class LoginActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODE
+                    requestCode
             )
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            REQUEST_CODE -> {
+            requestCode -> {
                 Log.e("DEBUG", grantResults.size.toString())
                 if (grantResults.isNotEmpty()
                         && (grantResults[0] == PackageManager.PERMISSION_DENIED
