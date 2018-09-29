@@ -135,16 +135,24 @@ object LocalExplorer : IExplorer {
     override fun putFile(path: String, localPath: String) {}
 
     override fun cd(directory: String): Single<Boolean> {
-        if (path[path.length - 1] != '/')
-            path += "/"
-        path += directory
-        return Single.just(Utils.isAccess(path))
+        val s = if (path[path.length - 1] != '/')
+            "$path/$directory"
+        else
+            path + directory
+
+        if (Utils.isAccess(s)) {
+            path = s
+        }
+        return Single.just(Utils.isAccess(s))
     }
 
     override fun cdParent(): Single<Boolean> {
         val s = File(path).parent
-        if (s != null) path = s
-        return Single.just(Utils.isAccess(path))
+        if (Utils.isAccess(s)) {
+            path = s
+            return Single.just(true)
+        }
+        return Single.just(false)
     }
 
     override fun rm(name: String): Single<Boolean> {

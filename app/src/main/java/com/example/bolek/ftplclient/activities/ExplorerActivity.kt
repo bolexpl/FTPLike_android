@@ -1,5 +1,7 @@
 package com.example.bolek.ftplclient.activities
 
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.design.widget.TabLayout
 import android.support.design.widget.Snackbar
@@ -9,13 +11,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.*
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import com.example.bolek.ftplclient.*
 import com.example.bolek.ftplclient.lib.RecyclerItemClickListener
@@ -31,8 +32,8 @@ class ExplorerActivity : AppCompatActivity() {
 
     lateinit var localUpdater: ExplorerUpdater
     lateinit var remoteAdapter: ExplorerAdapter
-    private var back = false
-    private var thread: Thread? = null
+//    private var back = false
+//    private var thread: Thread? = null
 
 
     /**
@@ -91,24 +92,55 @@ class ExplorerActivity : AppCompatActivity() {
             }
             R.id.action_show_hidden -> {
                 LocalExplorer.showHidden = !LocalExplorer.showHidden
-//                RemoteExplorer.showHidden = !RemoteExplorer.showHidden
                 localUpdater.refresh()
-//                remoteAdapter.updateAll()
                 return true
             }
-            R.id.action_debug -> {
-                //debug
+            R.id.action_create_dir -> {
+                //TODO
+                showDialog()
+
+                val c = container.currentItem
+                Toast.makeText(applicationContext, c.toString(), Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.action_create_file -> {
+                //TODO
+            }
+            R.id.action_paste -> {
+                //TODO
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("InflateParams")
+    private fun showDialog() {
+
+        val dialogBuilder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.prompt_dialog, null)
+        dialogBuilder.setView(dialogView)
+
+        val edt = dialogView.findViewById<EditText>(R.id.edit1)
+
+        dialogBuilder.setTitle("Podaj nazwę")
+        dialogBuilder.setMessage("Wprowadź nazwę nowego folderu")
+        dialogBuilder.setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+            //TODO
+        }
+        dialogBuilder.setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+            //TODO
+        }
+        dialogBuilder.create().show()
+    }
+
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter(fm: FragmentManager, private val activity: ExplorerActivity) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: FragmentManager,
+                                     private val activity: ExplorerActivity)
+        : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
 
@@ -132,28 +164,33 @@ class ExplorerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (back) {
-            thread?.interrupt()
-//            val intent = Intent(Intent.ACTION_MAIN)
-//            intent.addCategory(Intent.CATEGORY_HOME)
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(intent)
-            finish()
-            System.exit(0)
-//            moveTaskToBack(true)
-        } else {
-            Toast.makeText(applicationContext, resources.getString(R.string.back_press), Toast.LENGTH_SHORT).show()
-            back = true
-            thread?.interrupt()
-            thread = Thread(Runnable {
-                try {
-                    Thread.sleep(3000)
-                    back = false
-                } catch (e: InterruptedException) {
-                }
-            })
-            thread!!.start()
+        val c = container.currentItem
+        if (c == 0) {
+            localUpdater.cd("..")
         }
+
+//        if (back) {
+//            thread?.interrupt()
+////            val intent = Intent(Intent.ACTION_MAIN)
+////            intent.addCategory(Intent.CATEGORY_HOME)
+////            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+////            startActivity(intent)
+//            finish()
+//            System.exit(0)
+////            moveTaskToBack(true)
+//        } else {
+//            Toast.makeText(applicationContext, resources.getString(R.string.back_press), Toast.LENGTH_SHORT).show()
+//            back = true
+//            thread?.interrupt()
+//            thread = Thread(Runnable {
+//                try {
+//                    Thread.sleep(3000)
+//                    back = false
+//                } catch (e: InterruptedException) {
+//                }
+//            })
+//            thread!!.start()
+//        }
     }
 
     /**
@@ -231,14 +268,25 @@ class ExplorerActivity : AppCompatActivity() {
                                         true
                                     }
                                     R.id.action_rename -> {
+                                        //TODO
                                         true
                                     }
                                     R.id.action_attach -> {
+                                        //TODO
                                         true
                                     }
                                     R.id.action_delete -> {
+                                        //TODO
                                         adapter.list.removeAt(position)
                                         adapter.notifyItemRemoved(position)
+                                        true
+                                    }
+                                    R.id.action_copy -> {
+                                        //TODO
+                                        true
+                                    }
+                                    R.id.action_cut -> {
+                                        //TODO
                                         true
                                     }
                                     else -> false

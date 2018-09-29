@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">FTPL Client</string>
 
+    <string name="ok">Ok</string>
+    <string name="cancel">Anuluj</string>
+
     <!-- Strings related to login -->
     <string name="prompt_host">Host</string>
     <string name="prompt_port">Port</string>
@@ -14,11 +17,22 @@
     <string name="mode_active">Aktywny</string>
     <string name="mode_passive">Pasywny</string>
 
+    <!-- options in menus -->
     <string name="action_sign_in">Połącz</string>
-    <string name="error_field_required">To pole jest wymagane</string>
     <string name="action_settings">Ustawienia</string>
     <string name="action_show_hidden">Pokaż/Ukryj ukryte</string>
     <string name="action_disconnect">Odłącz</string>
+    <string name="action_open">Otwórz</string>
+    <string name="action_rename">Zmień nazwę</string>
+    <string name="action_attach">Dopisz</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_create_dir">Utwórz katalog</string>
+    <string name="action_create_file">Utwórz plik</string>
+    <string name="action_copy">Kopiuj</string>
+    <string name="action_cut">Wytnij</string>
+    <string name="action_paste">Wklej</string>
+
+    <string name="error_field_required">To pole jest wymagane</string>
     <string name="title_activity_explorer">Explorer</string>
     <string name="tab_text_1">Lokalne</string>
     <string name="tab_text_2">Zdalne</string>
@@ -31,11 +45,8 @@
     <string name="size_gb">%.2f GB</string>
     <string name="menu_multi_del">usuń</string>
 
-    <string name="menu_popup_open">Otwórz</string>
-    <string name="menu_popup_rename">Zmień nazwę</string>
-    <string name="menu_popup_attach">Dopisz</string>
-    <string name="menu_popup_delete">Usuń</string>
-
     <string name="back_press">Wciśnij jeszcze raz, żeby wyjść.</string>
+
+    <string name="get_name">Wpisz nazwę</string>
 
 </resources>

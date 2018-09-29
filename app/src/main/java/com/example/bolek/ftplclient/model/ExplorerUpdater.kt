@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import java.io.IOException
 
 class ExplorerUpdater(private val context: Context,
                       private val explorer: IExplorer,
@@ -27,7 +28,11 @@ class ExplorerUpdater(private val context: Context,
             }
 
             override fun onError(e: Throwable) {
-                Toast.makeText(context, "Błąd połączenia", Toast.LENGTH_SHORT).show()
+                if (e is IOException) {
+                    Toast.makeText(context, "Błąd połączenia", Toast.LENGTH_SHORT).show()
+                } else {
+
+                }
                 Log.e("ERROR", e.localizedMessage)
             }
         }
@@ -42,11 +47,39 @@ class ExplorerUpdater(private val context: Context,
         val single = if (directory == "..") explorer.cdParent() else explorer.cd(directory)
         val observer = object : DisposableSingleObserver<Boolean>() {
             override fun onSuccess(t: Boolean) {
-                refresh()
+                if (t)
+                    refresh()
+                else
+                    Toast.makeText(context, "Nie można otworzyć", Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(e: Throwable) {
-                Toast.makeText(context, "Nie można otworzyć", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Błąd", Toast.LENGTH_SHORT).show()
+            }
+        }
+        disposables.add(single
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(observer)
+        )
+    }
+
+    fun createDir(directory: String) {
+        val single = explorer.mkdir(directory)
+        val observer = object : DisposableSingleObserver<Boolean>() {
+            override fun onSuccess(t: Boolean) {
+                if (t) {
+                    adapter.list.add(
+                            FileInfo(directory,
+                                    true,
+                                    directory[0] == '.', 4096))
+                    adapter.notifyDataSetChanged()
+                } else
+                    Toast.makeText(context, "Nie można utworzyć katalogu", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(e: Throwable) {
+                Toast.makeText(context, "Błąd", Toast.LENGTH_SHORT).show()
             }
         }
         disposables.add(single

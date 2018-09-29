@@ -1,6 +1,16 @@
 teraz:
-lokalne funkcje
+lokalne tworzenie katalogu
 
+lokalne:
+TODO tworzenie katalogu
+TODO tworzenie pliku
+TODO dopisywanie do pliku
+TODO usuwanie
+TODO kopiowanie
+TODO przenoszenie
+TODO zmiana nazwy
+
+zdalne:
 TODO połączenie i komunikacja
 TODO logowanie
 TODO tryb aktywny

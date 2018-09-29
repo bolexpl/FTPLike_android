@@ -13,18 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:hint="@string/edit_path"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:importantForAutofill="no"
-        tools:ignore="UnusedAttribute"/>
+        android:hint="@string/edit_path"
+        android:imeOptions="actionDone"
+        android:inputType="textNoSuggestions"
+        tools:ignore="Autofill"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/path"/>
+        android:layout_below="@+id/path"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
