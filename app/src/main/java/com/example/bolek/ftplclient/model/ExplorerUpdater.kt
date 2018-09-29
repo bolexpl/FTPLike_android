@@ -19,8 +19,8 @@ class ExplorerUpdater(private val context: Context,
 
     fun refresh() {
         val single = explorer.listFiles()
-        val observer = object : DisposableSingleObserver<List<FileInfo>>() {
-            override fun onSuccess(t: List<FileInfo>) {
+        val observer = object : DisposableSingleObserver<MutableList<FileInfo>>() {
+            override fun onSuccess(t: MutableList<FileInfo>) {
                 adapter.list = t
                 adapter.notifyDataSetChanged()
                 editPath.setText(explorer.getDir())

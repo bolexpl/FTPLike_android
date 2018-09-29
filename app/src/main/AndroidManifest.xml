@@ -27,7 +27,6 @@
         <activity
             android:name=".activities.ExplorerActivity"
             android:label="@string/title_activity_explorer"
-            android:parentActivityName=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
