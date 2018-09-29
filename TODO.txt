@@ -1,5 +1,5 @@
 teraz:
-popup menu
+lokalne funkcje
 
 TODO połączenie i komunikacja
 TODO logowanie

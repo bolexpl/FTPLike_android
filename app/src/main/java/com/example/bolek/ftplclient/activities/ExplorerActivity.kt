@@ -195,7 +195,8 @@ class ExplorerActivity : AppCompatActivity() {
                                 if (adapter.list[position].fileName != "..")
                                     multiSelect(position)
                             } else {
-                                updater.cd(adapter.list[position].fileName)
+                                if (adapter.list[position].isDir)
+                                    updater.cd(adapter.list[position].fileName)
                             }
                         }
 
@@ -225,7 +226,8 @@ class ExplorerActivity : AppCompatActivity() {
                                 val item = adapter.list[position]
                                 when (it.itemId) {
                                     R.id.action_open -> {
-                                        updater.cd(item.fileName)
+                                        if (item.isDir)
+                                            updater.cd(item.fileName)
                                         true
                                     }
                                     R.id.action_rename -> {
