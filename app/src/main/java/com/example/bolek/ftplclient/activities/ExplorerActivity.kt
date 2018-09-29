@@ -32,7 +32,7 @@ class ExplorerActivity : AppCompatActivity() {
     lateinit var localUpdater: ExplorerUpdater
     lateinit var remoteAdapter: ExplorerAdapter
     private var back = false
-    private var thread : Thread? = null
+    private var thread: Thread? = null
 
 
     /**
@@ -149,7 +149,8 @@ class ExplorerActivity : AppCompatActivity() {
                 try {
                     Thread.sleep(3000)
                     back = false
-                }catch (e : InterruptedException){ }
+                } catch (e: InterruptedException) {
+                }
             })
             thread!!.start()
         }
@@ -212,6 +213,38 @@ class ExplorerActivity : AppCompatActivity() {
 
                             multiSelect(position)
                         }
+
+                        override fun onSpecialButtonClick(view: View, position: Int) {
+                            if (adapter.list[position].fileName == ".." ||
+                                    isMultiSelect) return
+
+                            val popup = PopupMenu(context!!, view)
+                            popup.inflate(R.menu.menu_popup)
+
+                            popup.setOnMenuItemClickListener {
+                                val item = adapter.list[position]
+                                when (it.itemId) {
+                                    R.id.action_open -> {
+                                        updater.cd(item.fileName)
+                                        true
+                                    }
+                                    R.id.action_rename -> {
+                                        true
+                                    }
+                                    R.id.action_attach -> {
+                                        true
+                                    }
+                                    R.id.action_delete -> {
+                                        adapter.list.removeAt(position)
+                                        adapter.notifyItemRemoved(position)
+                                        true
+                                    }
+                                    else -> false
+
+                                }
+                            }
+                            popup.show()
+                        }
                     }))
 
             return rootView
@@ -231,11 +264,6 @@ class ExplorerActivity : AppCompatActivity() {
                 }
                 refreshAdapter()
             }
-            Log.d("SELECT", "pliki--------------------------------->")
-            for (f in selected) {
-                Log.d("SELECT", f.fileName)
-            }
-            Log.d("SELECT", "--------------------------------------<")
         }
 
         private val mActionModeCallback = object : ActionMode.Callback {

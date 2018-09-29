@@ -27,15 +27,6 @@ class ExplorerAdapter(private val context: Context,
         val popupButton = v.popupButton!!
     }
 
-//    fun updateAll() {
-//        if (local) {
-//            list = LocalExplorer.listFiles()
-//        } else {
-//            //TODO
-//        }
-//        notifyDataSetChanged()
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.file_item, parent, false))
     }
@@ -47,36 +38,6 @@ class ExplorerAdapter(private val context: Context,
     override fun onBindViewHolder(holder: ViewHolder, i: Int) {
 
         holder.fileName.text = list[i].fileName
-
-        val bt = holder.popupButton
-        bt.setOnClickListener { _ ->
-            val popup = PopupMenu(context, bt)
-            popup.inflate(R.menu.menu_popup)
-
-            popup.setOnMenuItemClickListener {
-                val item = list[holder.adapterPosition]
-                when (it.itemId) {
-                    R.id.action_open -> {
-                        updater.cd(item.fileName)
-                        true
-                    }
-                    R.id.action_rename -> {
-                        true
-                    }
-                    R.id.action_attach -> {
-                        true
-                    }
-                    R.id.action_delete -> {
-                        list.removeAt(holder.adapterPosition)
-                        notifyItemRemoved(holder.adapterPosition)
-                        true
-                    }
-                    else -> false
-
-                }
-            }
-            popup.show()
-        }
 
         if (selected.contains(list[i])) {
             holder.checked.visibility = View.VISIBLE
